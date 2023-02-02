@@ -9,14 +9,14 @@
 #include "ntp.h"
 #include "esp_timer.h"
 ////////////////////
-#include "esp_netif_sntp.h"
-#include "lwip/ip_addr.h"
+//#include "esp_netif_sntp.h"
+#include "lwip/ip_addr.h" 
 #include "esp_sntp.h"
 ////////////////////
 #include <stdint.h>
 #include "WiFiScan.h"
-HardwareSerial Serial_hmi(2);
-#include "hmi_mini.h"
+HardwareSerial Serial_hmi(2); 
+#include "hmi_mini.h"  
 
 NTP ntp(3);
 String incStr;
