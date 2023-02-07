@@ -15,7 +15,8 @@
 ////////////////////
 #include <stdint.h>
 #include "WiFiScan.h"
-HardwareSerial Serial_hmi(2); 
+//HardwareSerial Serial_hmi(2); 
+#define Serial_hmi Serial2
 #include "hmi_mini.h" 
 
 
@@ -161,22 +162,10 @@ void upload_clock_hmi(){
  ntp_status();
  String time = ntp.timeString();
  String date = ntp.dateString();
- String hour = time.substring(0,2) ;
- String minutes = time.substring(3,5) ;
- String seconds = time.substring(6,8) ;
-sendInt(Serial_hmi,"rtc3",hour.toInt());
-sendInt(Serial_hmi,"rtc4",minutes.toInt());
-sendInt(Serial_hmi,"rtc5",seconds.toInt());
-//hour.toInt();
-//minutes.toInt();
-//seconds.toInt();
+sendInt(Serial_hmi,"rtc3",time.substring(0,2).toInt());
+sendInt(Serial_hmi,"rtc4",time.substring(3,5).toInt());
+sendInt(Serial_hmi,"rtc5",time.substring(6,8).toInt());
  Serial.println(time);
- //Serial.println(date);
- //Serial.println(ntp.timeString());
- //Serial.println(ntp.dateString());
- //Serial.println();
-
-
 }
 
 void setup() {
