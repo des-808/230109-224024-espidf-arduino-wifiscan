@@ -80,7 +80,7 @@ struct myStructAutoWiFi {
   byte mode;
 } tmpStruct;
 
-void ntp_status(HardwareSerial Serial){
+void ntp_status_serial(HardwareSerial Serial){
 int stat = ntp.status();
    switch(stat){     
        case 0:  Serial.println("всё ок");                               break;
@@ -206,13 +206,13 @@ void vTaskNTPsunc( void * pvParameters )
             Serial.println();
             #endif
         }
-        vTaskDelay(DELAY_1minutes);
+        vTaskDelay(DELAY_24hours);
     }
 }
 
 void upload_clock_hmi(){
  ntp.updateNow(); 
- ntp_status(Serial);
+ ntp_status_serial(Serial);
  String time = ntp.timeString();
  String date = ntp.dateString();
  int hour = time.substring(0,2).toInt() ;
