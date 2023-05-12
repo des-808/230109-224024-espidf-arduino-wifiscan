@@ -296,6 +296,7 @@ void loop() {
     if(boolean_xz==true){boolean_xz=false; wifiScan();}
     if(read_buf_serial_hmi_bool){read_buf_serial_hmi();read_buf_serial_hmi_bool = false;}
     if(ssid_ok&&password_ok){
+        detachInterrupt(RF_PIN);
         ssid_ok=false;
         password_ok=false;
         WiFi.begin((const char*) ssid.c_str(), (const char*) password.c_str());
@@ -317,6 +318,7 @@ void loop() {
         sendString(Serial2,"wifiConnect.txt","connect to "+ssid);sendInt(Serial2,"tm2.en",1);
         sendInt(Serial2,"va10.val",1);
         //Serial.write((const char*) ssid.c_str());
+        attachInterrupt(RF_PIN, handler, CHANGE);// re-enable interrupt
     }
     delay(10);
     ///hdc1080_read_to_send_serial();
