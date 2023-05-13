@@ -82,6 +82,8 @@ struct myStructAutoWiFi {
   byte mode;
 } tmpStruct;
 
+myStructAutoWiFi wifi_struct;
+
 void ntp_status_serial(HardwareSerial Serial){
 int stat = ntp.status();
    switch(stat){     
@@ -221,11 +223,7 @@ void upload_clock_hmi(){
 sendInt(Serial_hmi,"rtc3",hour);
 sendInt(Serial_hmi,"rtc4",minutes);
 sendInt(Serial_hmi,"rtc5",seconds);
- //Serial.println(time);
- //Serial.println(date);
- //Serial.println();
 }
-int dddddd =0x1050;
 void hdc1080_read_to_send_serial(){
 #ifdef DEBUG_hdc1080
   Serial.println(HDC1080.isConnected());
@@ -244,13 +242,17 @@ void hdc1080_read_to_send_HMI(){
         HDC1080.triggerRead();
     }else{
         sendInt(Serial2,"x0.val",-99);
-        sendInt(Serial2,"n3.val",0);
+        sendInt(Serial2,"n3.val",9);
     }
 }
 
-template<class T> int getSecond(T* tempStruct) {
-  // возвращает второй элемент структуры 
-  return tempStruct->kek;
+template <class T>T getFirst(T *tmpStruct)// возвращает пкрвый элемент структуры
+{
+    return tmpStruct->ssid;
+}
+template <class T>T getSecond(T *tmpStruct)// возвращает второй элемент структуры
+{
+    return tmpStruct->pass;
 }
 void eeprom_write(){}
 void eeprom_read(){ }
@@ -293,6 +295,9 @@ void setup() {
 
 
 void loop() {
+//char xz[] = getFirst( wifi_struct);
+
+
     if(boolean_xz==true){boolean_xz=false; wifiScan();}
     if(read_buf_serial_hmi_bool){read_buf_serial_hmi();read_buf_serial_hmi_bool = false;}
     if(ssid_ok&&password_ok){
