@@ -20,7 +20,7 @@
 //#define DEBUG
 //#define DEBUG_hdc1080
 //#define DEBUG_STRING_ARR_BUFER
-//#define DEBUG_SERIAL_STRING_ARR_BUFER
+#define DEBUG_SERIAL_STRING_ARR_BUFER
 #include "hmi_mini.h" 
 #include "rf_termometr.h"
 #include <nahs-Bricks-Lib-HDC1080.h>
@@ -44,6 +44,7 @@ void upload_clock_hmi();
 void hdc1080_read_to_send_serial();
 void hdc1080_read_to_send_HMI();
 void send_termo_out_to_hmi(String byte_arr,String batery,int ch,int temp,int humiditu);
+void restart_attachInterrupt();
 
 bool ssid_ok=false;
 bool password_ok=false;
@@ -321,8 +322,6 @@ void loop() {
         attachInterrupt(RF_PIN, handler, CHANGE);// re-enable interrupt
     }
     delay(10);
-    ///hdc1080_read_to_send_serial();
-    //delay(1000);
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 if (received == true) {
@@ -332,14 +331,14 @@ if (received == true) {
     is_rf_post = printSerialToRfData(syncIndex1,syncIndex2,bufer,count);
     if(is_rf_post){
         is_rf_post=false;
-        //#ifdef DEBUG_SERIAL_STRING_ARR_BUFER
-        //for( int i = 0;i<counts;i++){Serial.print(bufer[i]); }Serial.println("");
-        //#endif
+        #ifdef DEBUG_SERIAL_STRING_ARR_BUFER
+        for( int i = 0;i<counts;i++){Serial.print(bufer[i]); }Serial.println("");
+        #endif
         byte_arr = "";
         for( int i = 0;i<counts;i++){byte_arr += (String)bufer[i]; }
-        //#ifdef DEBUG_STRING_ARR_BUFER
+        #ifdef DEBUG_STRING_ARR_BUFER
             Serial.print(byte_arr);Serial.println();
-        //#endif
+        #endif
             
         humidity = ch = bat = temp = 0;
         for(int i = 0, c = 7; i <= 7 ;  i++,c--){bitWrite(datchik,  c, bufer[i]==1?1:0);}    
@@ -355,13 +354,13 @@ if (received == true) {
         Serial.print(message);    Serial.print(temp0);   Serial.print("."); Serial.print(temp1); Serial.print(", ");
         Serial.print("Humidity:");Serial.print(humidity);Serial.print("%"); Serial.println("");
     }
-    
-    delay(1000);
+    ticker.once_ms(1000, restart_attachInterrupt);
+  }
+/////////////////////////////////////////////////////////////////////////////////////////////
+}
+void restart_attachInterrupt(){
     attachInterrupt(RF_PIN, handler, CHANGE);// re-enable interrupt
     received = false;
     syncIndex1 = 0;
     syncIndex2 = 0;
-  }
-/////////////////////////////////////////////////////////////////////////////////////////////
 }
-
