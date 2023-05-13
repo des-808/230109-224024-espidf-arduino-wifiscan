@@ -19,8 +19,8 @@
 #include "WiFiScan.h"
 //#define DEBUG
 //#define DEBUG_hdc1080
-//#define DEBUG_STRING_ARR_BUFER
-#define DEBUG_SERIAL_STRING_ARR_BUFER
+//#define DEBUG_SERIAL_STRING_ARR_BUFER
+#define DEBUG_STRING_ARR_BUFER
 #include "hmi_mini.h" 
 #include "rf_termometr.h"
 #include <nahs-Bricks-Lib-HDC1080.h>
