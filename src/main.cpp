@@ -26,7 +26,8 @@
 #include <nahs-Bricks-Lib-HDC1080.h>
 
 HDC1080_SerialNumber sn;
-Ticker ticker;
+Ticker periodicTicker;
+Ticker onceTicker;
 #define EEPROM_SIZE 512
 #define Serial_hmi Serial2
 #define STACK_SIZE 2048
@@ -285,7 +286,7 @@ void setup() {
   Serial.println(HDC1080.begin());
   HDC1080.getSN(sn);
   HDC1080.triggerRead();
-  ticker.attach_ms(5000, hdc1080_read_to_send_HMI);
+  periodicTicker.attach_ms(5000, hdc1080_read_to_send_HMI);
   EEPROM.begin(EEPROM_SIZE);
   
     sendInt(Serial2,"va10.val",0);
@@ -354,7 +355,7 @@ if (received == true) {
         Serial.print(message);    Serial.print(temp0);   Serial.print("."); Serial.print(temp1); Serial.print(", ");
         Serial.print("Humidity:");Serial.print(humidity);Serial.print("%"); Serial.println("");
     }
-    ticker.once_ms(1000, restart_attachInterrupt);
+    onceTicker.once_ms(1000, restart_attachInterrupt);
   }
 /////////////////////////////////////////////////////////////////////////////////////////////
 }
