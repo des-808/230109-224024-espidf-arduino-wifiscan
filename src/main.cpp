@@ -117,8 +117,6 @@ void wifiScan() {
     if (n == 0) {
         sendString(Serial2,"t15","no networks found");
     } else {
-        //sendComand_2("page page2");
-        //sendString("t0.txt",+analogRead(pinR)+"\"");
         sendString(Serial2,"t15.txt","netw found "+intToString(n,10));
         for (int i = 0; i < 14; ++i) {//i<n
             String ff = intToString(i,10);//10 = десятиричная система счисления;
